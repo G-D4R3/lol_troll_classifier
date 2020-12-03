@@ -84,7 +84,7 @@ def get_match_list(account_id, begin_time):
     if r.status_code == 200: # response가 정상이면 바로 맨 밑으로 이동하여 정상적으로 코드 실행
         pass
     if r.status_code ==404:
-        return "404"
+        return None
 
     elif r.status_code == 429:
         print('api cost full : infinite loop start')
@@ -128,6 +128,8 @@ def get_match_list(account_id, begin_time):
     for id in r.json()['matches']:
         if(id['timestamp'] > begin_time):
             match_ids.append(id['gameId'])
+
+    
     return match_ids
 
 def getGameData(gameId):
@@ -140,7 +142,7 @@ def getGameData(gameId):
     if r.status_code == 200: # response가 정상이면 바로 맨 밑으로 이동하여 정상적으로 코드 실행
         pass
     if r.status_code ==404:
-        return None
+        return []
 
     elif r.status_code == 429:
         print('api cost full : infinite loop start')
@@ -192,9 +194,10 @@ def get_user_matchdata(name, due):
     if account_id == 0:
         return None
     match_list = get_match_list(account_id, begin_time)
-
+    print('afg',match_list, type(match_list))
+    if(match_list == None):
+        match_list = []
     result = []
-
     for id in match_list:
         match_data = getGameData(id)
         p_id = getParticipantId(match_data['participantIdentities'], name)
@@ -297,4 +300,4 @@ def do_(_name = None, _message = None):
     return render_template('html.html', _name = name, game_n = len(pred), troll_n = np.count_nonzero(pred == 1), percent = format(100* np.count_nonzero(pred == 1)/len(pred),".2f"))
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port="8080")
+    app.run(host='0.0.0.0', port="80")
