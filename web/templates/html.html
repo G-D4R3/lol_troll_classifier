@@ -1,0 +1,61 @@
+<!doctype html>
+
+<html>
+    <head>
+        <style>
+            .result {
+                text-align: center;
+            }
+            img {
+                margin: 0 auto;
+            }
+            .title {
+                margin-top: 150px;
+                text-align: center;
+            }
+            .search_bar {
+                width: 500px;
+                height: 30px;
+                margin-top: 20px;
+                padding: 5px;
+            }
+            .btn {
+                border-width: 0;
+                margin-top: 20px;
+                padding: 1px 2px;
+                width: 50px;
+                height: 40px;
+                background-color: darkblue;
+                text-align: center;
+                color: white;
+            }
+        </style>
+        <title>누가 트롤 소리를 내었어?</title>
+    </head>
+    <body>
+        <div class="title">
+            <a href="/"><img src="{{url_for('static', filename='image/logo.jpg')}}"  alt="title" width="700"/></a>
+            <br>
+            <form action="/search" method="get">
+                <input class='search_bar' type="text" id="name" name="name" required>
+                <input type="submit" class="btn" value="검색">
+            </form>
+        </div>
+        <div class="result">
+            {% if _message == None %}
+                <p></p>
+            {% else %}
+                <p>{{_message}}</p>
+            {% endif %}
+            {% if _name == None %}
+                <p>소환사명을 검색해보세요.</p>
+            {% else %}
+                <p>{{_name}} 님</p>
+                <p>최근 일주일 솔로 랭킹 게임 수 : {{game_n}}게임</p>
+                <p>최근 탐지된 비매너 게임 : {{troll_n}}게임</p>
+                <p>내가 관심법으로 보았어. <br>
+                    {{percent}}% 트롤이야.</p>
+            {% endif %}
+        </div>
+    </body>
+</html>
